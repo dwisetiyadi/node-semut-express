@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 /**
  * Expose express
  */
-module.exports = function (http, express, app, config) {
+module.exports = function (http, express, config, app) {
     // Database
     var connect = function () {
         var options = {
