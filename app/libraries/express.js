@@ -45,8 +45,8 @@ module.exports = function (http, express, config, app) {
     app.server.listen(port, function () {
         console.log('\n==============================');
         console.log('Semut Express MVC');
-        console.log('Started on port: ' + port);
-        console.log('With environment: ' + env);
+        console.log('Started on port  : ' + port);
+        console.log('With environment : ' + env);
         console.log('==============================\n');
     });
 };
