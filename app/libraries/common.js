@@ -1,6 +1,8 @@
 // Call dependencies
-var env    = process.env.NODE_ENV || 'development';
-var config = require(__dirname + '/config/app')[env];
+var path     = require('path');
+var rootPath = path.normalize(__dirname + '/../..')
+var env      = process.env.NODE_ENV || 'development';
+var config   = require(rootPath + '/app/config/app')[env];
 
 /**
  * Expose common
