@@ -1,5 +1,5 @@
 // Call dependencies
-var path     = require('path');
+var path    = require('path');
 var appPath = path.normalize(__dirname + '/..');
 
 /**
