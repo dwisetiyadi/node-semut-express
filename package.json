@@ -8,8 +8,10 @@
     "url": "https://github.com/dwisetiyadi/node-semut-express.git"
   },
   "dependencies": {
-    "express": "4.x",
+    "express": "^4.x",
     "jade": "^1.3.0",
-    "mongoose": "^3.8.8"
+    "mongoose": "^3.8.8",
+    "express-mongoose": "^0.1.0",
+    "express-namespace": "^0.1.1"
   }
 }
