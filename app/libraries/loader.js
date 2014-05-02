@@ -16,6 +16,10 @@ module.exports = {
         var middlewarePath = config.path.app + '/middlewares/' + callFile;
         return require(middlewarePath);
     },
+    helper: function (callFile) {
+        var helperPath = config.path.app + '/helpers/' + callFile;
+        return require(helperPath);
+    },
     controller: function (callFile) {
         var controllerPath = config.path.app + '/controllers/' + callFile;
         return require(controllerPath);
