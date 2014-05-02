@@ -3,12 +3,11 @@ var mongoose     = require('mongoose');
 var logger       = require('morgan');
 var responseTime = require('response-time');
 var compression  = require('compression');
-var env          = process.env.NODE_ENV || 'development';
 
 /**
  * Expose express
  */
-module.exports = function (http, express, config, app) {
+module.exports = function (http, express, env, config, app) {
 
     app.set('env', env);
 
@@ -86,13 +85,19 @@ module.exports = function (http, express, config, app) {
 
 
     // Run server
-    var port   = process.env.PORT || config.port;
-    app.server = http.createServer(app);
-    app.server.listen(port, function () {
+    var port = process.env.PORT || config.port;
+    server   = http.createServer(app);
+    server.listen(port, function (err) {
+        if (err) {
+            return console.trace(err);
+        }
         console.log('\n==============================');
         console.log('Semut Express MVC');
         console.log('Started on port  : ' + port);
         console.log('With environment : ' + env);
         console.log('==============================\n');
+    });
+    server.on('error', function (err) {
+        console.error('✗ PORT '+ port + ': ' + err);
     });
 };

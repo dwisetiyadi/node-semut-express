@@ -1,8 +1,6 @@
 // Call dependencies
-var path     = require('path');
-var rootPath = path.normalize(__dirname + '/../..');
 var env      = process.env.NODE_ENV || 'development';
-var config   = require(rootPath + '/app/config/app')[env];
+var config   = require('../config/app')[env];
 var mongoose = require('mongoose');
 
 /**
