@@ -1,4 +1,4 @@
 exports.bar = function (req, res, next) {
-    console.log('hello world middleware');
+    console.log('this is middleware proccess for controller hello method world');
     next();
 }

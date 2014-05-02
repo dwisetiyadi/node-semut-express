@@ -1,6 +1,6 @@
 /**
  * Expose routes
  */
-module.exports = function (app, common) {
-    app.get('/', common.middleware('foo').bar, common.controller('hello').world);
+module.exports = function (app, loader) {
+    app.get('/', loader.middleware('foo').bar, loader.controller('hello').world);
 };
