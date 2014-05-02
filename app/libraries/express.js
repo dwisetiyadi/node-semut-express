@@ -1,16 +1,17 @@
 // Call dependencies
-var mongoose     = require('mongoose');
-var logger       = require('morgan');
-var responseTime = require('response-time');
-var compression  = require('compression');
+var mongoose       = require('mongoose');
+var bodyParser     = require('body-parser');
+var multer         = require('multer');
+var methodOverride = require('method-override');
+var logger         = require('morgan');
+var responseTime   = require('response-time');
+var compression    = require('compression');
+var favicon        = require('static-favicon');
 
 /**
  * Expose express
  */
 module.exports = function (http, express, env, config, app) {
-
-    app.set('env', env);
-
 
     // Database
     var connect = function () {
@@ -20,7 +21,7 @@ module.exports = function (http, express, env, config, app) {
                     keepAlive: 1
                 }
             },
-            auto_reconnect:true
+            auto_reconnect: true
         };
         mongoose.connect(config.db, options);
     };
@@ -33,13 +34,30 @@ module.exports = function (http, express, env, config, app) {
     }); // Reconnect when closed
 
 
-    // Public
-    app.use(express.static(config.path.public));
+    var allowCrossDomain = function (req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header('Access-Control-Allow-Credentials', true)
+        res.header("Access-Control-Allow-Headers", "X-Requested-With");
+        next();
+    }
+
+    app.enable('trust proxy');
+    app.disable('x-powered-by');
+
+    app.use(favicon(config.path.public + '/img/favicon.ico'));
+    app.use(bodyParser());
+    app.use(multer());
+    app.use(methodOverride());
+    app.use(allowCrossDomain);
+
 
     // View
     app.set('views', config.path.app + '/views');
     app.set('view engine', 'jade');
     app.set('app', config);
+
+    // Public
+    app.use(express.static(config.path.public));
 
     // Routing
     var loader = require(config.path.app + '/libraries/loader');
@@ -51,7 +69,7 @@ module.exports = function (http, express, env, config, app) {
     if (app.get('env') === 'development') {
         app.use(logger('dev'));
         app.use(responseTime());
-        app.use(function(err, req, res, next) {
+        app.use(function (err, req, res, next) {
             res.status(err.status || 500);
             res.render('errors/general', {
                 heading: err.status || 500,
@@ -60,7 +78,7 @@ module.exports = function (http, express, env, config, app) {
         });
     } else {
         app.use(logger());
-        app.use(function(err, req, res, next) {
+        app.use(function (err, req, res, next) {
             res.status(err.status || 500);
             res.render('errors/general', {
                 heading: err.status || 500,
@@ -75,7 +93,7 @@ module.exports = function (http, express, env, config, app) {
         }));
     }
     // catch 404 and forwarding to error handler
-    app.use(function(req, res, next) {
+    app.use(function (req, res, next) {
         var err = new Error('Not Found');
         res.status(404).render('errors/404', {
             heading: '404',

@@ -48,4 +48,5 @@ p {
 
 pre {
     margin: 15px !important;
+    overflow: auto;
 }

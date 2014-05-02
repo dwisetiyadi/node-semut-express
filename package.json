@@ -13,8 +13,12 @@
     "mongoose": "^3.8.8",
     "express-mongoose": "^0.1.0",
     "express-namespace": "^0.1.1",
+    "body-parser": "^1.0.2",
+    "multer": "0.0.5",
+    "method-override": "^1.0.0",
     "morgan": "^1.0.0",
     "response-time": "^1.0.0",
-    "compression": "^1.0.2"
+    "compression": "^1.0.2",
+    "static-favicon": "^1.0.2"
   }
 }
