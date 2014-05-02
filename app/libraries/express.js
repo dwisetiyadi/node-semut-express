@@ -12,6 +12,7 @@ module.exports = function (http, express, config, app) {
 
     app.set('env', env);
 
+
     // Database
     var connect = function () {
         var options = {
@@ -31,6 +32,7 @@ module.exports = function (http, express, config, app) {
     mongoose.connection.on('disconnected', function () {
         connect();
     }); // Reconnect when closed
+
 
     // Public
     app.use(express.static(config.path.public));
@@ -84,7 +86,6 @@ module.exports = function (http, express, config, app) {
 
 
     // Run server
-    var env    = process.env.NODE_ENV || 'development';
     var port   = process.env.PORT || config.port;
     app.server = http.createServer(app);
     app.server.listen(port, function () {
