@@ -7,6 +7,13 @@ var mongoose = require('mongoose');
  * Expose common
  */
 module.exports = {
+    config: function (callFile) {
+        if (typeof callFile === 'undefined') {
+            var callFile = 'app';
+        }
+        var configPath = config.path.app + '/config/' + callFile;
+        return require(configPath)[env];
+    },
     model: function(modelName) {
         var modelPath = config.path.app + '/models/' + modelName;
         require(modelPath);

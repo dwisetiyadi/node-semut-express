@@ -76,6 +76,7 @@ module.exports = function (http, express, env, config, app) {
                 message: err.stack
             });
         });
+        app.locals.pretty = true;
     } else {
         app.use(logger());
         app.use(function (err, req, res, next) {
@@ -96,8 +97,8 @@ module.exports = function (http, express, env, config, app) {
     app.use(function (req, res, next) {
         var err = new Error('Not Found');
         res.status(404).render('errors/404', {
-            heading: '404',
-            message: 'Page Not Found'
+            heading: '404 Page Not Found',
+            message: 'The page you requested was not found.'
         });
     });
 
