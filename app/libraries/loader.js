@@ -14,21 +14,21 @@ module.exports = {
         var configPath = config.path.app + '/config/' + callFile;
         return require(configPath)[env];
     },
+    helper: function (callFile) {
+        var helperPath = config.path.app + '/helpers/' + callFile;
+        return require(helperPath);
+    },
     model: function(modelName) {
         var modelPath = config.path.app + '/models/' + modelName;
         require(modelPath);
         return mongoose.model(modelName);
     },
-    middleware: function (callFile) {
-        var middlewarePath = config.path.app + '/middlewares/' + callFile;
-        return require(middlewarePath);
-    },
-    helper: function (callFile) {
-        var helperPath = config.path.app + '/helpers/' + callFile;
-        return require(helperPath);
-    },
     controller: function (callFile) {
         var controllerPath = config.path.app + '/controllers/' + callFile;
         return require(controllerPath);
+    },
+    middleware: function (callFile) {
+        var middlewarePath = config.path.app + '/middlewares/' + callFile;
+        return require(middlewarePath);
     }
 };
