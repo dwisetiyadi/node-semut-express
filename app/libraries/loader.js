@@ -30,5 +30,8 @@ module.exports = {
     middleware: function (callFile) {
         var middlewarePath = config.path.app + '/middlewares/' + callFile;
         return require(middlewarePath);
+    },
+    node: function(nodeModule) {
+        return require(nodeModule);
     }
 };
