@@ -12,7 +12,7 @@ Just clone and run
 npm install
 ```
 
-## Todo:
+## Todo
 - Built in User Management with ACL
 - Unit Testing
 - DOcumentation
