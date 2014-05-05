@@ -3,6 +3,7 @@
 Node Semut Express
 ==========================
 [![Dependency Status](https://david-dm.org/dwisetiyadi/node-semut-express.svg)](https://david-dm.org/dwisetiyadi/node-semut-express)
+[![Build Status](https://travis-ci.org/dwisetiyadi/node-semut-express.svg?branch=master)](https://travis-ci.org/dwisetiyadi/node-semut-express)
 
 This is a Node.js tiny MVC Framework, build using Express.js and Mongoose.js.
 
