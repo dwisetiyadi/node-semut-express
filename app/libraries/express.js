@@ -28,7 +28,7 @@ module.exports = function (http, express, env, config, app) {
         };
         connect();
         mongoose.connection.on('error', function (err) {
-            console.error('✗ MongoDB Connection Error. Please make sure MongoDB is running.\n' + err + '\n');
+            console.error('✗ MongoDB Connection ' + err + '\n');
         }); // Error handler
         mongoose.connection.on('disconnected', function () {
             connect();
