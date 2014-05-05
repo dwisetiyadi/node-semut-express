@@ -31,6 +31,33 @@ module.exports = {
         var middlewarePath = config.path.app + '/middlewares/' + callFile;
         return require(middlewarePath);
     },
+    database: function (host) {
+        if (typeof host === 'undefined') {
+            var host = config.db.host;
+        }
+        if (config.db.autoconnect === false) {
+            var connect = function () {
+                var options = {
+                    server: {
+                        socketOptions: {
+                            keepAlive: 1
+                        }
+                    },
+                    auto_reconnect: true
+                };
+                mongoose.connect(host, options);
+            };
+            if (mongoose.connection.readyState === 0) {
+                connect();
+            }
+            mongoose.connection.on('error', function (err) {
+                console.error('✗ MongoDB Connection ' + err + '\n');
+            }); // Error handler
+            mongoose.connection.on('disconnected', function () {
+                connect();
+            }); // Reconnect when closed
+        }
+    },
     node: function(nodeModule) {
         return require(nodeModule);
     }

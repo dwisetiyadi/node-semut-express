@@ -4,7 +4,10 @@ var rootPath = path.normalize(__dirname + '/../..');
 module.exports = {
     development: {
         port: 3000,
-        db: 'mongodb://localhost/',
+        db: {
+            host: 'mongodb://localhost/',
+            autoconnect: true
+        },
         path: {
             root: rootPath,
             app: rootPath + '/app',
@@ -13,7 +16,10 @@ module.exports = {
     },
     production: {
         port: 3000,
-        db: 'mongodb://localhost/',
+        db: {
+            host: 'mongodb://localhost/',
+            autoconnect: true
+        },
         path: {
             root: rootPath,
             app: rootPath + '/app',
@@ -22,7 +28,10 @@ module.exports = {
     },
     test: {
         port: 3000,
-        db: 'mongodb://localhost/',
+        db: {
+            host: 'mongodb://localhost/',
+            autoconnect: true
+        },
         path: {
             root: rootPath,
             app: rootPath + '/app',

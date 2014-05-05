@@ -14,24 +14,26 @@ var favicon        = require('static-favicon');
 module.exports = function (http, express, env, config, app) {
 
     // Database
-    var connect = function () {
-        var options = {
-            server: {
-                socketOptions: {
-                    keepAlive: 1
-                }
-            },
-            auto_reconnect: true
+    if (config.db.autoconnect === true) {
+        var connect = function () {
+            var options = {
+                server: {
+                    socketOptions: {
+                        keepAlive: 1
+                    }
+                },
+                auto_reconnect: true
+            };
+            mongoose.connect(config.db.host, options);
         };
-        mongoose.connect(config.db, options);
-    };
-    connect();
-    mongoose.connection.on('error', function (err) {
-        console.error('✗ MongoDB Connection Error. Please make sure MongoDB is running.\n' + err + '\n');
-    }); // Error handler
-    mongoose.connection.on('disconnected', function () {
         connect();
-    }); // Reconnect when closed
+        mongoose.connection.on('error', function (err) {
+            console.error('✗ MongoDB Connection Error. Please make sure MongoDB is running.\n' + err + '\n');
+        }); // Error handler
+        mongoose.connection.on('disconnected', function () {
+            connect();
+        }); // Reconnect when closed
+    }
 
 
     var allowCrossDomain = function (req, res, next) {
