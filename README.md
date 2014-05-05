@@ -12,7 +12,7 @@ Just clone and run
 npm install
 ```
 
-Todo:
-1. Built in User Management with ACL
-2. Unit Testing
-3. DOcumentation
+## Todo:
+- Built in User Management with ACL
+- Unit Testing
+- DOcumentation
