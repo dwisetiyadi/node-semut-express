@@ -1,17 +1,28 @@
 // Call dependencies
-var mongoose       = require('mongoose');
-var bodyParser     = require('body-parser');
-var multer         = require('multer');
-var methodOverride = require('method-override');
-var logger         = require('morgan');
-var responseTime   = require('response-time');
-var compression    = require('compression');
-var favicon        = require('static-favicon');
+var mongoose         = require('mongoose');
+var bodyParser       = require('body-parser');
+var multer           = require('multer');
+var methodOverride   = require('method-override');
+var logger           = require('morgan');
+var responseTime     = require('response-time');
+var compression      = require('compression');
+var passport         = require('passport');
+var LocalStrategy    = require('passport-local').Strategy
+var TwitterStrategy  = require('passport-twitter').Strategy;
+var FacebookStrategy = require('passport-facebook').Strategy;
+var favicon          = require('static-favicon');
+var cookieParser     = require('cookie-parser');
+var session          = require('express-session');
 
 /**
  * Expose express
  */
 module.exports = function (http, express, env, config, app) {
+
+    // Passport
+    if (config.vendor.twitter.consumerKey !== '' && config.vendor.facebook.clientID !== '') {
+        require(config.path.app + '/libraries/passport')(app, passport, LocalStrategy, TwitterStrategy, FacebookStrategy);
+    }
 
     // Database
     if (config.db.autoconnect === true) {
@@ -36,6 +47,7 @@ module.exports = function (http, express, env, config, app) {
     }
 
 
+    // Allow Cross Domain
     var allowCrossDomain = function (req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
         res.header('Access-Control-Allow-Credentials', true)
@@ -51,6 +63,16 @@ module.exports = function (http, express, env, config, app) {
     app.use(multer());
     app.use(methodOverride());
     app.use(allowCrossDomain);
+    app.use(cookieParser(config.encryptionKey));
+    app.use(session({
+        secret: config.encryptionKey,
+        key: 'sid',
+        cookie: { secure: true }
+    }));
+    app.use(passport.initialize());
+    app.use(passport.session({
+        maxAge: new Date(Date.now() + 3600000)
+    }));
 
 
     // View
@@ -74,7 +96,7 @@ module.exports = function (http, express, env, config, app) {
         app.use(function (err, req, res, next) {
             res.status(err.status || 500);
             res.render('errors/general', {
-                heading: err.status || 500,
+                heading: err.status || 500 + ' Internal Server Error',
                 message: err.stack
             });
         });
@@ -84,8 +106,8 @@ module.exports = function (http, express, env, config, app) {
         app.use(function (err, req, res, next) {
             res.status(err.status || 500);
             res.render('errors/general', {
-                heading: err.status || 500,
-                message: 'Internal Server Error'
+                heading: err.status || 500 + ' Internal Server Error',
+                message: 'Something goes wrong, please tell your webmaster.'
             });
         });
         app.use(compression({

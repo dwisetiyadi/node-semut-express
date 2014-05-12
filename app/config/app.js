@@ -12,7 +12,20 @@ module.exports = {
             root: rootPath,
             app: rootPath + '/app',
             public: rootPath + '/public'
-        }
+        },
+        vendor: {
+            twitter: {
+                consumerKey: process.env.TWITTER_KEY || '',
+                consumerSecret: process.env.TWITTER_SECRET  || '',
+                callbackURL: '/auth/twitter'
+            },
+            facebook: {
+                clientID: process.env.FACEBOOK_ID || '',
+                clientSecret: process.env.FACEBOOK_SECRET || '',
+                callbackURL: '/auth/facebook'
+            }
+        },
+        encryptionKey: 'keyboard cat'
     },
     production: {
         port: 3000,
@@ -24,7 +37,20 @@ module.exports = {
             root: rootPath,
             app: rootPath + '/app',
             public: rootPath + '/public'
-        }
+        },
+        vendor: {
+            twitter: {
+                consumerKey: process.env.TWITTER_KEY || '',
+                consumerSecret: process.env.TWITTER_SECRET  || '',
+                callbackURL: '/auth/twitter'
+            },
+            facebook: {
+                clientID: process.env.FACEBOOK_ID || '',
+                clientSecret: process.env.FACEBOOK_SECRET || '',
+                callbackURL: '/auth/facebook'
+            }
+        },
+        encryptionKey: 'keyboard cat'
     },
     test: {
         port: 3000,
@@ -36,6 +62,19 @@ module.exports = {
             root: rootPath,
             app: rootPath + '/app',
             public: rootPath + '/public'
-        }
+        },
+        vendor: {
+            twitter: {
+                consumerKey: process.env.TWITTER_KEY || '',
+                consumerSecret: process.env.TWITTER_SECRET  || '',
+                callbackURL: '/auth/twitter'
+            },
+            facebook: {
+                clientID: process.env.FACEBOOK_ID || '',
+                clientSecret: process.env.FACEBOOK_SECRET || '',
+                callbackURL: '/auth/facebook'
+            }
+        },
+        encryptionKey: 'keyboard cat'
     }
 };
