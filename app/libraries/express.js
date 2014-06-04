@@ -15,9 +15,19 @@ var cookieParser     = require('cookie-parser');
 var session          = require('express-session');
 
 /**
- * Expose express
+ * Expose Express
  */
 module.exports = function (http, express, env, config, app) {
+
+    var port = process.env.PORT || config.port;
+
+    // Base URL
+    app.use(function(req, res, next) {
+        req.baseUrl = function () {
+            return req.protocol + "://" + req.get('host') + (port == 80 || port == 443 ? '' : ':' + port);
+        }
+        return next();
+    });
 
     // Passport
     if (config.vendor.twitter.consumerKey !== '' && config.vendor.facebook.clientID !== '') {
@@ -128,7 +138,6 @@ module.exports = function (http, express, env, config, app) {
 
 
     // Run server
-    var port = process.env.PORT || config.port;
     server   = http.createServer(app);
     server.listen(port, function (err) {
         if (err) {

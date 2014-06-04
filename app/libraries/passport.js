@@ -1,8 +1,12 @@
+// Call dependencies
 var loader = require('../libraries/loader');
 var config = loader.config();
 var User   = loader.model('User');
 
-module.exports = function (app, passport, LocalStrategy, TwitterStrategy, FacebookStrategy) {
+/**
+ * Expose Passport
+ */
+module.exports = function (app, passport, LocalStrategy, TwitterStrategy, FacebookStrategy, req, res) {
 
     // Serialize/deserialize user
     passport.serializeUser(function (user, done) {
@@ -41,20 +45,94 @@ module.exports = function (app, passport, LocalStrategy, TwitterStrategy, Facebo
 
 
 
-    // Twitter Strategy
-    passport.use(new TwitterStrategy(config.vendor.twitter, function(token, tokenSecret, profile, done) {
-        User.findOrCreate(..., function(err, user) {
-            if (err) { return done(err); }
+    // Facebook Strategy
+    passport.use(new FacebookStrategy({
+            clientID: config.vendor.facebook.clientID,
+            clientSecret: config.vendor.facebook.clientSecret,
+            callbackURL: req.baseUrl + config.vendor.facebook.callbackURL
+        }, function(accessToken, refreshToken, profile, done) {
+        User.findOne({vendor.id : profile.id, vendor.provider : profile.provider}, function(err, existinguser) {
+            if (err) {
+                return done(err);
+            }
+
+            if (existinguser) {
+                profile.accesstoken  = accessToken;
+                profile.refreshtoken = refreshToken;
+                existinguser.vendor  = profile;
+
+                existinguser.save(function (err, saved) {
+                    if (err) {
+                        return done(err);
+                    }
+                    done(null, saved)
+                });
+            } else {
+                var user = new User();
+
+                user.email = profile._json.email;
+                user.name  = profile.displayName;
+                user.photo = 'https://graph.facebook.com/' + profile.id + '/picture?type=large';
+
+                profile.accesstoken  = accessToken;
+                profile.refreshtoken = refreshToken;
+                user.vendor.push(profile);
+
+                user.save(function (err, saved) {
+                    if (err) {
+                        return done(err);
+                    }
+                    done(null, saved)
+                });
+            }
+
             done(null, user);
         });
     }));
 
 
 
-    // Facebook Strategy
-    passport.use(new FacebookStrategy(config.vendor.facebook, function(accessToken, refreshToken, profile, done) {
-        User.findOrCreate(..., function(err, user) {
-            if (err) { return done(err); }
+    // Twitter Strategy
+    passport.use(new TwitterStrategy({
+        consumerKey: config.vendor.facebook.twitter.consumerKey,
+        consumerSecret: config.vendor.facebook.twitter.consumerSecret,
+        callbackURL: req.baseUrl + config.vendor.facebook.twitter.callbackURL
+    }, function(token, tokenSecret, profile, done) {
+        User.findOne({vendor.id : profile.id, vendor.provider : profile.provider}, function(err, existinguser) {
+            if (err) {
+                return done(err);
+            }
+
+            if (existinguser) {
+                profile.accesstoken  = token;
+                profile.refreshtoken = tokenSecret;
+                existinguser.vendor  = profile;
+
+                existinguser.save(function (err, saved) {
+                    if (err) {
+                        return done(err);
+                    }
+                    done(null, saved)
+                });
+            } else {
+                var user = new User();
+
+                user.email = profile._json.email;
+                user.name  = profile.displayName;
+                user.photo = profile._json.profile_image_url;
+
+                profile.accesstoken  = token;
+                profile.refreshtoken = tokenSecret;
+                user.vendor.push(profile);
+
+                user.save(function (err, saved) {
+                    if (err) {
+                        return done(err);
+                    }
+                    done(null, saved)
+                });
+            }
+
             done(null, user);
         });
     }));

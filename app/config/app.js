@@ -17,12 +17,12 @@ module.exports = {
             twitter: {
                 consumerKey: process.env.TWITTER_KEY || '',
                 consumerSecret: process.env.TWITTER_SECRET  || '',
-                callbackURL: '/auth/twitter'
+                callbackURL: '/auth/twitter/callback'
             },
             facebook: {
                 clientID: process.env.FACEBOOK_ID || '',
                 clientSecret: process.env.FACEBOOK_SECRET || '',
-                callbackURL: '/auth/facebook'
+                callbackURL: '/auth/facebook/callback'
             }
         },
         encryptionKey: 'keyboard cat'
@@ -42,12 +42,12 @@ module.exports = {
             twitter: {
                 consumerKey: process.env.TWITTER_KEY || '',
                 consumerSecret: process.env.TWITTER_SECRET  || '',
-                callbackURL: '/auth/twitter'
+                callbackURL: '/auth/twitter/callback'
             },
             facebook: {
                 clientID: process.env.FACEBOOK_ID || '',
                 clientSecret: process.env.FACEBOOK_SECRET || '',
-                callbackURL: '/auth/facebook'
+                callbackURL: '/auth/facebook/callback'
             }
         },
         encryptionKey: 'keyboard cat'
@@ -67,12 +67,12 @@ module.exports = {
             twitter: {
                 consumerKey: process.env.TWITTER_KEY || '',
                 consumerSecret: process.env.TWITTER_SECRET  || '',
-                callbackURL: '/auth/twitter'
+                callbackURL: '/auth/twitter/callback'
             },
             facebook: {
                 clientID: process.env.FACEBOOK_ID || '',
                 clientSecret: process.env.FACEBOOK_SECRET || '',
-                callbackURL: '/auth/facebook'
+                callbackURL: '/auth/facebook/callback'
             }
         },
         encryptionKey: 'keyboard cat'

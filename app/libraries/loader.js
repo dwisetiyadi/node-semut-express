@@ -4,7 +4,7 @@ var config   = require('../config/app')[env];
 var mongoose = require('mongoose');
 
 /**
- * Expose common
+ * Expose Loader
  */
 module.exports = {
     config: function (callFile) {
