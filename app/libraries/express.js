@@ -13,6 +13,8 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var favicon          = require('static-favicon');
 var cookieParser     = require('cookie-parser');
 var session          = require('express-session');
+var MongoStore       = require('connect-mongo')({ session: session });
+var flash            = require('express-flash');
 
 /**
  * Expose Express
@@ -30,9 +32,7 @@ module.exports = function (http, express, env, config, app) {
     });
 
     // Passport
-    if (config.vendor.twitter.consumerKey !== '' && config.vendor.facebook.clientID !== '') {
-        require(config.path.app + '/libraries/passport')(app, passport, LocalStrategy, TwitterStrategy, FacebookStrategy);
-    }
+    require(config.path.app + '/libraries/passport')(app, passport, LocalStrategy, TwitterStrategy, FacebookStrategy);
 
     // Database
     if (config.db.autoconnect === true) {
@@ -43,9 +43,9 @@ module.exports = function (http, express, env, config, app) {
                         keepAlive: 1
                     }
                 },
-                auto_reconnect: true
+                auto_reconnect: config.db.auto_reconnect
             };
-            mongoose.connect(config.db.host, options);
+            mongoose.connect(config.db.host + '/' + config.db.name, options);
         };
         connect();
         mongoose.connection.on('error', function (err) {
@@ -76,13 +76,17 @@ module.exports = function (http, express, env, config, app) {
     app.use(cookieParser(config.encryptionKey));
     app.use(session({
         secret: config.encryptionKey,
-        key: 'sid',
-        cookie: { secure: true }
+        store: new MongoStore({
+            db             : config.db.name,
+            collection     : config.session.collection,
+            auto_reconnect : config.db.auto_reconnect
+        })
     }));
     app.use(passport.initialize());
     app.use(passport.session({
-        maxAge: new Date(Date.now() + 3600000)
+        maxAge: new Date(Date.now() + config.session.expire)
     }));
+    app.use(flash());
 
 
     // View
