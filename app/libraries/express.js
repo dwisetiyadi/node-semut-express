@@ -10,7 +10,7 @@ var passport         = require('passport');
 var LocalStrategy    = require('passport-local').Strategy
 var TwitterStrategy  = require('passport-twitter').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
-var favicon          = require('static-favicon');
+var favicon          = require('serve-favicon');
 var cookieParser     = require('cookie-parser');
 var session          = require('express-session');
 var MongoStore       = require('connect-mongo')({ session: session });
@@ -69,7 +69,10 @@ module.exports = function (http, express, env, config, app) {
     app.disable('x-powered-by');
 
     app.use(favicon(config.path.public + '/img/favicon.ico'));
-    app.use(bodyParser());
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({
+        extended: true
+    }));
     app.use(multer());
     app.use(methodOverride());
     app.use(allowCrossDomain);

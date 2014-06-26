@@ -18,20 +18,20 @@ module.exports = function (app, load) {
     	res.render('auth/signin', {
     		message: req.flash('error')
     	});
-    })
+    });
     app.post('/signin',
     	passport.authenticate('local', {
     		successRedirect: '/dashboard',
     		failureRedirect: '/signin',
     		failureFlash: true
     	})
-    )
+    );
 
     // Sign Out Control
     app.get('/signout', function (req, res) {
     	req.logout();
     	res.redirect('/');
-    })
+    });
 
     // Dashboard for Authenticated User
     app.get('/dashboard', load.middleware('auth').isAuthenticated, function (req, res) {
