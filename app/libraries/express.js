@@ -83,7 +83,10 @@ module.exports = function (http, express, env, config, app) {
             db             : config.db.name,
             collection     : config.session.collection,
             auto_reconnect : config.db.auto_reconnect
-        })
+        }),
+        proxy: true,
+        resave: true,
+        saveUninitialized: true
     }));
     app.use(passport.initialize());
     app.use(passport.session({
