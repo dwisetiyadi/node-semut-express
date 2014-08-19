@@ -79,14 +79,14 @@ module.exports = function (http, express, env, config, app) {
     app.use(cookieParser(config.encryptionKey));
     app.use(session({
         secret: config.encryptionKey,
+        proxy: true,
+        resave: true,
+        saveUninitialized: true,
         store: new MongoStore({
             db             : config.db.name,
             collection     : config.session.collection,
             auto_reconnect : config.db.auto_reconnect
-        }),
-        proxy: true,
-        resave: true,
-        saveUninitialized: true
+        })
     }));
     app.use(passport.initialize());
     app.use(passport.session({
