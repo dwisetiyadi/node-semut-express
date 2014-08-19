@@ -13,6 +13,8 @@ Just clone and run
 npm install
 ```
 
+Tested on Node v0.10.30
+
 ## Todo
 - Built in User Management with ACL
 - Unit Testing
